@@ -1,0 +1,31 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: hello_graphql_dev
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - exhello:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+
+#   redis:
+#     image: redis
+#     ports:
+#       - "6379:6379"
+  web:
+    build: .
+    # env_file: .env
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+
+volumes:
+  exhello:
+    external: true
